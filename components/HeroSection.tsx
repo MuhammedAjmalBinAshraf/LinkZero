@@ -5,7 +5,9 @@ import { useRef, useEffect, useState } from "react";
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const [sectionMousePos, setSectionMousePos] = useState({ x: 50, y: 50 });
+  const [imageMousePos, setImageMousePos] = useState({ x: 170, y: 120 });
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -17,16 +19,26 @@ export default function HeroSection() {
     if (!section) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = section.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      setMousePos({ x, y });
-      section.style.setProperty("--mouse-x", `${x}%`);
-      section.style.setProperty("--mouse-y", `${y}%`);
+      // 1. Coordinates relative to section for general ambient glow
+      const sRect = section.getBoundingClientRect();
+      const sx = ((e.clientX - sRect.left) / sRect.width) * 100;
+      const sy = ((e.clientY - sRect.top) / sRect.height) * 100;
+      setSectionMousePos({ x: sx, y: sy });
+      section.style.setProperty("--mouse-x", `${sx}%`);
+      section.style.setProperty("--mouse-y", `${sy}%`);
+
+      // 2. Coordinates relative to image container for precise spotlight reveal
+      const imgContainer = imageContainerRef.current;
+      if (imgContainer) {
+        const iRect = imgContainer.getBoundingClientRect();
+        const ix = e.clientX - iRect.left;
+        const iy = e.clientY - iRect.top;
+        setImageMousePos({ x: ix, y: iy });
+      }
     };
 
-    section.addEventListener("mousemove", handleMouseMove);
-    return () => section.removeEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
@@ -59,7 +71,7 @@ export default function HeroSection() {
       <div
         className="absolute inset-0 pointer-events-none z-10"
         style={{
-          background: `radial-gradient(700px circle at ${mousePos.x}% ${mousePos.y}%, rgba(245,245,255,0.09) 0%, rgba(245,245,255,0.03) 35%, transparent 70%)`,
+          background: `radial-gradient(700px circle at ${sectionMousePos.x}% ${sectionMousePos.y}%, rgba(245,245,255,0.09) 0%, rgba(245,245,255,0.03) 35%, transparent 70%)`,
           transition: "background 80ms linear",
         }}
       />
@@ -86,25 +98,49 @@ export default function HeroSection() {
           </span>
         </motion.div>
 
-        {/* Device illustration */}
+        {/* Device spotlight visual */}
         <motion.div
+          ref={imageContainerRef}
           initial={{ opacity: 0, scale: 0.88 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="relative mb-12"
+          className="relative mb-12 w-[340px] h-[240px] rounded-2xl overflow-hidden border border-white/10 bg-black/40 shadow-2xl"
         >
-          {/* Glow halo behind device */}
+          {/* Ambient glow behind image container */}
           <div
-            className="absolute inset-0 rounded-full blur-3xl opacity-20"
+            className="absolute inset-0 rounded-full blur-3xl opacity-10 pointer-events-none"
             style={{
               background:
-                "radial-gradient(ellipse, rgba(245,245,255,0.8) 0%, transparent 70%)",
-              transform: "scale(1.3) translateY(10%)",
+                "radial-gradient(ellipse, rgba(245,245,255,0.6) 0%, transparent 70%)",
             }}
           />
 
-          {/* Device SVG illustration */}
-          <DeviceIllustration />
+          {/* Underlayer: very dark, desaturated (represents unlit/shadow parts) */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/image_876a8400.png"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-20 filter grayscale brightness-[0.25]"
+            aria-hidden="true"
+          />
+
+          {/* Overlayer: fully lit, revealed via cursor radial-gradient mask */}
+          <div
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            style={{
+              backgroundImage: "url('/assets/image_876a8400.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              maskImage: `radial-gradient(circle 130px at ${imageMousePos.x}px ${imageMousePos.y}px, black 30%, transparent 100%)`,
+              WebkitMaskImage: `radial-gradient(circle 130px at ${imageMousePos.x}px ${imageMousePos.y}px, black 30%, transparent 100%)`,
+            }}
+          />
+
+          {/* Micro white-led pulsing dots overlay */}
+          <span
+            className="absolute top-[48%] left-[45%] w-2 h-2 rounded-full animate-pulse-glow z-20 pointer-events-none"
+            style={{ backgroundColor: "var(--color-led-white)" }}
+          />
         </motion.div>
 
         {/* Headline */}

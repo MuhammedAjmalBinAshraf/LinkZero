@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useScroll } from "framer-motion";
 import HeroSection from "./HeroSection";
+import CinematicShowcase from "./CinematicShowcase";
 import TechDeepDive from "./TechDeepDive";
 import WorkflowSection from "./WorkflowSection";
 import BatchSection from "./BatchSection";
@@ -19,6 +20,7 @@ export default function LandingPage() {
   return (
     <div ref={containerRef} className="relative" style={{ fontFamily: "var(--font-inter)" }}>
       <HeroSection />
+      <CinematicShowcase />
       <TechDeepDive scrollYProgress={scrollYProgress} />
       <WorkflowSection scrollYProgress={scrollYProgress} />
       <BatchSection />
@@ -26,3 +28,4 @@ export default function LandingPage() {
     </div>
   );
 }
+

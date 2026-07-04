@@ -307,6 +307,38 @@ export default function WorkflowSection({ scrollYProgress }: Props) {
           </motion.div>
         </div>
 
+        {/* Technical Profile Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mt-12 glass rounded-2xl overflow-hidden p-6 max-w-2xl mx-auto flex flex-col md:flex-row items-center gap-6"
+          style={{ borderColor: "var(--color-border)" }}
+        >
+          <div className="w-full md:w-1/2 aspect-video rounded-xl overflow-hidden border border-white/5 bg-black/40">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/image_9964628e.png"
+              alt="Link Zero Structural Spec Profile"
+              className="w-full h-full object-cover opacity-80"
+            />
+          </div>
+          <div className="w-full md:w-1/2">
+            <h3 className="text-sm font-semibold tracking-wider uppercase mb-2" style={{ fontFamily: "var(--font-jetbrains)", color: "var(--color-led-white)" }}>
+              // struct_profile.dxf
+            </h3>
+            <p className="text-xs leading-relaxed" style={{ color: "var(--color-dim)" }}>
+              Standardized shell dimensions engineered for universal USB casing compatibility. Features transparent polymer boundaries and integrated PCBWay anchor slots.
+            </p>
+            <div className="mt-4 flex gap-4 text-[10px] text-muted font-jetbrains" style={{ fontFamily: "var(--font-jetbrains)", color: "var(--color-muted)" }}>
+              <div>WIDTH: <span style={{ color: "var(--color-led-white)" }}>30mm</span></div>
+              <div>LENGTH: <span style={{ color: "var(--color-led-white)" }}>80mm</span></div>
+              <div>DEPTH: <span style={{ color: "var(--color-led-white)" }}>12mm</span></div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Center wifi symbol */}
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}

@@ -99,8 +99,16 @@ export default function TechDeepDive({ scrollYProgress }: Props) {
       <div className="relative flex items-center justify-center w-full max-w-4xl mx-auto">
         <motion.div
           style={{ scale, opacity }}
-          className="relative"
+          className="relative w-[420px] h-[520px]"
         >
+          {/* Background photograph of the internal board of the device */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/image_9113a7cd.png"
+            alt="Link Zero Internal PCB layout"
+            className="absolute w-[180px] h-[460px] top-[30px] left-[120px] object-cover rounded-[22px] opacity-40 pointer-events-none z-0 mix-blend-screen"
+          />
+
           {/* Device diagram SVG */}
           <svg
             width="420"
@@ -108,7 +116,7 @@ export default function TechDeepDive({ scrollYProgress }: Props) {
             viewBox="0 0 420 520"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="svg-callout"
+            className="absolute inset-0 w-full h-full z-10 svg-callout"
             aria-label="Link Zero internal component diagram"
           >
             {/* Dongle shell outline */}
