@@ -1,43 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 
-
 /* ─── Design Tokens ─────────────────────────────────────────────────── */
 @theme inline {
   /* Palette */
-  --color-void:          #050505;
-  --color-void-soft:     #0d0d0d;
-  --color-void-muted:    #111111;
-  --color-led-white:     #f5f5ff;
-  --color-led-cold:      #e8eeff;
-  --color-acrylic:       rgba(255,255,255,0.04);
-  --color-smoke:         rgba(255,255,255,0.08);
-  --color-border:        rgba(255,255,255,0.1);
-  --color-border-bright: rgba(255,255,255,0.22);
-  --color-muted:         rgba(255,255,255,0.35);
-  --color-dim:           rgba(255,255,255,0.55);
+  --color-void:          #030303;
+  --color-void-soft:     #08080a;
+  --color-void-muted:    #0d0d10;
+  --color-led-white:     #f8f8ff;
+  --color-led-cold:      #e2ebff;
+  --color-led-cyan:      #00f5ff;
+  --color-acrylic:       rgba(255,255,255,0.015);
+  --color-smoke:         rgba(255,255,255,0.035);
+  --color-border:        rgba(255,255,255,0.06);
+  --color-border-bright: rgba(255,255,255,0.18);
+  --color-muted:         rgba(255,255,255,0.28);
+  --color-dim:           rgba(255,255,255,0.5);
 
   /* Typography */
   --font-inter:      "Inter", system-ui, sans-serif;
   --font-jetbrains:  "JetBrains Mono", "Courier New", monospace;
 
   /* Glow shadows */
-  --shadow-glow-xs:  0 0 8px  rgba(245,245,255,0.25);
-  --shadow-glow-sm:  0 0 16px rgba(245,245,255,0.35);
-  --shadow-glow-md:  0 0 32px rgba(245,245,255,0.4);
-  --shadow-glow-lg:  0 0 64px rgba(245,245,255,0.5), 0 0 128px rgba(245,245,255,0.2);
+  --shadow-glow-xs:  0 0 8px  rgba(248,248,255,0.2);
+  --shadow-glow-sm:  0 0 16px rgba(248,248,255,0.3);
+  --shadow-glow-md:  0 0 32px rgba(248,248,255,0.35);
+  --shadow-glow-lg:  0 0 64px rgba(248,248,255,0.45), 0 0 128px rgba(248,248,255,0.15);
 
   /* Animations */
   --animate-pulse-glow:     pulse-glow 2.4s ease-in-out infinite;
   --animate-particle-float: particle-float 3s ease-in-out infinite;
   --animate-draw-line:      draw-line 1s ease-out forwards;
-  --animate-counter-in:     counter-in 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+  --animate-grid-scan:      grid-scan 8s linear infinite;
 }
 
 /* ─── Keyframes ──────────────────────────────────────────────────────── */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 12px rgba(245,245,255,0.3), 0 0 32px rgba(245,245,255,0.15); }
-  50%       { box-shadow: 0 0 28px rgba(245,245,255,0.7), 0 0 72px rgba(245,245,255,0.35); }
+  0%, 100% { box-shadow: 0 0 12px rgba(248,248,255,0.25), 0 0 32px rgba(248,248,255,0.1); }
+  50%       { box-shadow: 0 0 28px rgba(248,248,255,0.6), 0 0 72px rgba(248,248,255,0.3); }
 }
 
 @keyframes particle-float {
@@ -51,8 +51,13 @@
   to   { stroke-dashoffset: 0;   opacity: 1; }
 }
 
+@keyframes grid-scan {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 40px; }
+}
+
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -66,7 +71,7 @@
   .glow        { box-shadow: var(--shadow-glow-sm); }
   .glow-md     { box-shadow: var(--shadow-glow-md); }
   .glow-lg     { box-shadow: var(--shadow-glow-lg); }
-  .glow-text   { text-shadow: 0 0 12px rgba(245,245,255,0.6), 0 0 32px rgba(245,245,255,0.3); }
+  .glow-text   { text-shadow: 0 0 12px rgba(248,248,255,0.5), 0 0 32px rgba(248,248,255,0.25); }
 
   .font-inter     { font-family: var(--font-inter); }
   .font-jetbrains { font-family: var(--font-jetbrains); }
@@ -76,33 +81,60 @@
   .text-dim    { color: var(--color-dim); }
 
   .bg-void     { background-color: var(--color-void); }
+  .bg-void-soft{ background-color: var(--color-void-soft); }
   .bg-acrylic  { background-color: var(--color-acrylic); }
   .bg-smoke    { background-color: var(--color-smoke); }
 
   .border-glow { border-color: var(--color-border-bright); }
 
   .glass {
-    background: var(--color-acrylic);
+    background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.005) 100%);
     border: 1px solid var(--color-border);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.03);
+  }
+
+  .glass-card {
+    position: relative;
+    background: rgba(255,255,255,0.01);
+    border: 1px solid var(--color-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: inset 0 1px 0px rgba(255,255,255,0.05);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: inset 0 1px 0px rgba(255,255,255,0.08), 0 12px 40px rgba(0,0,0,0.4);
   }
 
   .shimmer-text {
-    background: linear-gradient(90deg, #fff 25%, #888 50%, #fff 75%);
+    background: linear-gradient(90deg, #fff 15%, #999 50%, #fff 85%);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shimmer 3s linear infinite;
+    animation: shimmer 4s linear infinite;
   }
 
-  .gradient-radial {
-    background: radial-gradient(ellipse at center, var(--tw-gradient-stops));
+  .bg-grid-dots {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-grid-lines {
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 
   .animate-pulse-glow    { animation: var(--animate-pulse-glow); }
   .animate-particle-float { animation: var(--animate-particle-float); }
+  .animate-grid-scan     { animation: var(--animate-grid-scan); }
 }
 
 /* ─── Base Reset ─────────────────────────────────────────────────────── */
@@ -123,15 +155,15 @@ body {
 }
 
 ::selection {
-  background: rgba(245, 245, 255, 0.15);
+  background: rgba(248, 248, 255, 0.12);
   color: #fff;
 }
 
-::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--color-void); }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
 
-/* ─── Spotlight Cursor ───────────────────────────────────────────────── */
+/* ─── Volumetric Spotlight Cursor ────────────────────────────────────── */
 .spotlight-hero {
   position: relative;
   overflow: hidden;
@@ -141,20 +173,34 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(245, 245, 255, 0.07) 0%,
-    rgba(245, 245, 255, 0.03) 30%,
-    transparent 70%
-  );
+  background: 
+    radial-gradient(
+      800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(248, 248, 255, 0.05) 0%,
+      rgba(248, 248, 255, 0.02) 25%,
+      transparent 70%
+    ),
+    radial-gradient(
+      400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(248, 248, 255, 0.04) 0%,
+      transparent 100%
+    );
   pointer-events: none;
-  transition: background 0.1s ease;
   z-index: 1;
 }
 
-/* ─── SVG Line Animation ─────────────────────────────────────────────── */
-.svg-callout line {
-  stroke-dasharray: 300;
-  stroke-dashoffset: 300;
-  animation: draw-line 1.2s ease-out forwards;
+/* ─── Tech CAD Crosshairs ────────────────────────────────────────────── */
+.cad-corner::before,
+.cad-corner::after {
+  content: "+";
+  position: absolute;
+  font-family: var(--font-jetbrains);
+  font-size: 10px;
+  color: rgba(255,255,255,0.15);
+  pointer-events: none;
 }
+
+.cad-corner-top-left::before { top: 4px; left: 6px; }
+.cad-corner-top-right::after { top: 4px; right: 6px; }
+.cad-corner-bottom-left::before { bottom: 4px; left: 6px; }
+.cad-corner-bottom-right::after { bottom: 4px; right: 6px; }
